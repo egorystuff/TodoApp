@@ -148,7 +148,7 @@ function addClassHeart() {
 }
 
 function keyHandlerEsc(e) {
-	if (e.keyCode == 27) {
+	if (e.keyCode === 27 || e.key === 'Escape') {
 		console.log('esc');
 		e.target.value = '';
 		e.target.blur();
