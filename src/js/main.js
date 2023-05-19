@@ -2,12 +2,15 @@ const form = document.querySelector('#form');
 const taskInput = document.querySelector('#taskInput');
 const tasksList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
+const heart = document.querySelector('#heart');
 
 form.addEventListener('submit', addTask);
 
 tasksList.addEventListener('click', deleteTask);
 
 tasksList.addEventListener('click', doneTask);
+
+heart.addEventListener('click', addClass);
 
 let tasks = [];
 
@@ -135,4 +138,9 @@ function renderTask(task) {
 
 	// add a task to the page
 	tasksList.insertAdjacentHTML('beforeend', taskHTML);
+}
+
+function addClass() {
+	if (heart.classList.contains('fa-heart--red')) heart.classList.remove('fa-heart--red');
+	else heart.classList.add('fa-heart--red');
 }
