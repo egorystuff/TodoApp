@@ -10,7 +10,9 @@ tasksList.addEventListener('click', deleteTask);
 
 tasksList.addEventListener('click', doneTask);
 
-heart.addEventListener('click', addClass);
+heart.addEventListener('click', addClassHeart);
+
+taskInput.addEventListener('keydown', keyHandlerEsc);
 
 let tasks = [];
 
@@ -140,7 +142,15 @@ function renderTask(task) {
 	tasksList.insertAdjacentHTML('beforeend', taskHTML);
 }
 
-function addClass() {
+function addClassHeart() {
 	if (heart.classList.contains('fa-heart--red')) heart.classList.remove('fa-heart--red');
 	else heart.classList.add('fa-heart--red');
+}
+
+function keyHandlerEsc(e) {
+	if (e.keyCode == 27) {
+		console.log('esc');
+		e.target.value = '';
+		e.target.blur();
+	}
 }
