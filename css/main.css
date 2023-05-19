@@ -140,3 +140,7 @@ body {
 	color: gray;
 	text-decoration: none;
 }
+
+.fa-heart--red {
+	color: red;
+}

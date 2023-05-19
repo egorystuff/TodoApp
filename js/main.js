@@ -2,12 +2,17 @@ const form = document.querySelector('#form');
 const taskInput = document.querySelector('#taskInput');
 const tasksList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
+const heart = document.querySelector('#heart');
 
 form.addEventListener('submit', addTask);
 
 tasksList.addEventListener('click', deleteTask);
 
 tasksList.addEventListener('click', doneTask);
+
+heart.addEventListener('click', addClassHeart);
+
+taskInput.addEventListener('keydown', keyHandlerEsc);
 
 let tasks = [];
 
@@ -135,4 +140,17 @@ function renderTask(task) {
 
 	// add a task to the page
 	tasksList.insertAdjacentHTML('beforeend', taskHTML);
+}
+
+function addClassHeart() {
+	if (heart.classList.contains('fa-heart--red')) heart.classList.remove('fa-heart--red');
+	else heart.classList.add('fa-heart--red');
+}
+
+function keyHandlerEsc(e) {
+	if (e.keyCode == 27) {
+		console.log('esc');
+		e.target.value = '';
+		e.target.blur();
+	}
 }
