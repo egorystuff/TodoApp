@@ -3,6 +3,7 @@ const taskInput = document.querySelector('#taskInput');
 const tasksList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
 const heart = document.querySelector('#heart');
+const btnAdd = document.querySelector('#btnAdd');
 
 form.addEventListener('submit', addTask);
 
@@ -25,6 +26,8 @@ if (localStorage.getItem('tasks')) {
 }
 
 checkEmptyList();
+
+addDisabledBtn();
 
 // функции
 function addTask(event) {
@@ -52,6 +55,8 @@ function addTask(event) {
 	checkEmptyList();
 
 	saveToLocalStorage();
+
+	addDisabledBtn();
 }
 
 function deleteTask(event) {
@@ -153,4 +158,17 @@ function keyHandlerEsc(e) {
 		e.target.value = '';
 		e.target.blur();
 	}
+
+	addDisabledBtn();
+}
+
+function addDisabledBtn() {
+	btnAdd.setAttribute('disabled', true);
+	taskInput.oninput = function () {
+		if (taskInput.value.length == 0) {
+			btnAdd.setAttribute('disabled', true);
+		} else {
+			btnAdd.removeAttribute('disabled');
+		}
+	};
 }
