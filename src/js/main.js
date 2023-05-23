@@ -20,10 +20,10 @@ let tasks = [];
 
 // проверяем есть ли local Storage для записи в массив
 if (localStorage.getItem('tasks')) {
-	tasks = JSON.parse(localStorage.getItem('tasks'));
+  tasks = JSON.parse(localStorage.getItem('tasks'));
 
-	// передаем данные из localStorage в массив
-	tasks.forEach((task) => renderTask(task));
+  // передаем данные из localStorage в массив
+  tasks.forEach((task) => renderTask(task));
 }
 
 checkEmptyList();
@@ -34,108 +34,108 @@ checkBox();
 
 // функции
 function addTask(event) {
-	event.preventDefault();
+  event.preventDefault();
 
-	// Получите текст задачи из поля ввода
-	const taskText = taskInput.value;
+  // Получите текст задачи из поля ввода
+  const taskText = taskInput.value;
 
-	// создаем объект с задачами
-	const newTask = {
-		id: Date.now(),
-		text: taskText,
-		done: false,
-	};
+  // создаем объект с задачами
+  const newTask = {
+    id: Date.now(),
+    text: taskText,
+    done: false,
+  };
 
-	// добавляем задачу в массив
-	tasks.push(newTask);
+  // добавляем задачу в массив
+  tasks.push(newTask);
 
-	renderTask(newTask);
+  renderTask(newTask);
 
-	// clear the input field and return focus to it
-	taskInput.value = '';
-	taskInput.focus();
+  // clear the input field and return focus to it
+  taskInput.value = '';
+  taskInput.focus();
 
-	checkEmptyList();
+  checkEmptyList();
 
-	saveToLocalStorage();
+  saveToLocalStorage();
 
-	checkBox();
+  checkBox();
 
-	addDisabledBtn();
+  addDisabledBtn();
 }
 
-function deleteTask(event) {
-	if (event.target.dataset.action !== 'delete') return;
+function deleteTask({target}) {
+  if (target.dataset.action !== 'delete') return;
 
-	const parentNode = event.target.closest('li');
+  const parentNode = target.closest('li');
 
-	// определяем id задачи
-	const id = Number(parentNode.id);
+  // определяем id задачи
+  const id = Number(parentNode.id);
 
-	// находим индекс задачи в массиве
-	const index = tasks.findIndex((task) => task.id == id);
+  // находим индекс задачи в массиве
+  const index = tasks.findIndex((task) => task.id === id);
 
-	// удаляем задачу из массива
-	tasks.splice(index, 1);
+  // удаляем задачу из массива
+  tasks.splice(index, 1);
 
-	// 2 метод - удаляем задачу через фильтрацию массива
-	// tasks = tasks.filter((task) => task.id !== id);
+  // 2 метод - удаляем задачу через фильтрацию массива
+  // tasks = tasks.filter((task) => task.id !== id);
 
-	// удаляем задачу из разметки
-	parentNode.remove();
+  // удаляем задачу из разметки
+  parentNode.remove();
 
-	checkEmptyList();
+  checkEmptyList();
 
-	saveToLocalStorage();
+  saveToLocalStorage();
 }
 
-function doneTask(event) {
-	if (event.target.dataset.action !== 'done') return;
+function doneTask({target}) {
+  if (target.dataset.action !== 'done') return;
 
-	const parentNode = event.target.closest('li');
+  const parentNode = target.closest('li');
 
-	// определяем id задачи
-	const id = Number(parentNode.id);
+  // определяем id задачи
+  const id = Number(parentNode.id);
 
-	const task = tasks.find((task) => task.id === id);
+  const task = tasks.find((task) => task.id === id);
 
-	task.done = !task.done;
+  task.done = !task.done;
 
-	const taskTitle = parentNode.querySelector('span');
-	taskTitle.classList.toggle('task-title--done');
+  const taskTitle = parentNode.querySelector('span');
+  taskTitle.classList.toggle('task-title--done');
 
-	saveToLocalStorage();
+  saveToLocalStorage();
 }
 
 function checkEmptyList() {
-	// Проверка не вустой ли массив
-	if (tasks.length === 0) {
-		const emptyListHTML = `
+  // Проверка не вустой ли массив
+  if (tasks.length === 0) {
+    const emptyListHTML = `
     <li id="emptyList" class="list-group-item empty-list">
     <img src="./img/leaf.svg" alt="Empty" width="48" class="mt-3" />
     <div class="empty-list__title">Список дел пуст</div>
   </li>`;
 
-		tasksList.insertAdjacentHTML('afterbegin', emptyListHTML);
-	}
+    tasksList.insertAdjacentHTML('afterbegin', emptyListHTML);
+  }
 
-	if (tasks.length > 0) {
-		const emptyListEl = document.querySelector('#emptyList');
-		emptyListEl ? emptyListEl.remove() : null;
-	}
+  if (tasks.length > 0) {
+    const emptyListEl = document.querySelector('#emptyList');
+    emptyListEl ? emptyListEl.remove() : null;
+  }
 }
 
 function saveToLocalStorage() {
-	// сохранение массива в Local Storage браузера
-	localStorage.setItem('tasks', JSON.stringify(tasks));
+  // сохранение массива в Local Storage браузера
+  localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 function renderTask(task) {
-	// формируем CSS class
-	const cssClass = task.done ? 'task-title task-title--done' : 'task-title';
+  // формируем CSS class
+  const cssClass = task.done ? 'task-title task-title--done' : 'task-title';
 
-	// генерировать разметку для новой задачи
-	const taskHTML = `		
+  // генерировать разметку для новой задачи
+  const taskHTML = `		
   <li id="${task.id}"  class="list-group-item d-flex justify-content-between task-item">
   <span class="${cssClass}">${task.text}</span>
   <div class="task-item__buttons">
@@ -148,66 +148,107 @@ function renderTask(task) {
   </div>
 </li>`;
 
-	// add a task to the page
-	tasksList.insertAdjacentHTML('beforeend', taskHTML);
+  // add a task to the page
+  tasksList.insertAdjacentHTML('beforeend', taskHTML);
 }
 
 function addClassHeart() {
-	if (heart.classList.contains('fa-heart--red')) heart.classList.remove('fa-heart--red');
-	else heart.classList.add('fa-heart--red');
+  if (heart.classList.contains('fa-heart--red')) heart.classList.remove('fa-heart--red');
+  else heart.classList.add('fa-heart--red');
 }
 
 function keyHandlerEsc(e) {
-	if (e.keyCode === 27 || e.key === 'Escape') {
-		console.log('esc');
-		e.target.value = '';
-		e.target.blur();
-	}
+  if (e.keyCode === 27 || e.key === 'Escape') {
+    e.target.value = '';
+    e.target.blur();
+    addDisabledBtn();
+    return;
+  }
 
-	addDisabledBtn();
+  if (e.key === 'Enter') {
+    const taskText = taskInput.value;
+
+    // создаем объект с задачами
+    const newTask = {
+      id: Date.now(),
+      text: taskText,
+      done: false,
+    };
+
+    tasks.push(newTask);
+
+    renderTask(newTask);
+
+    taskInput.value = '';
+    taskInput.blur();
+
+    addDisabledBtn();
+    taskInput.focus();
+
+    checkEmptyList();
+
+    saveToLocalStorage();
+
+    checkBox();
+
+    addDisabledBtn();
+
+
+  }
 }
 
-function addDisabledBtn() {
-	btnAdd.setAttribute('disabled', true);
 
-	taskInput.oninput = function () {
-		if (taskInput.value.length == 0) {
-			btnAdd.setAttribute('disabled', true);
-		} else {
-			btnAdd.removeAttribute('disabled');
-		}
-	};
+const cross = document.getElementById('cross')
+
+cross.addEventListener("click", () => {
+  taskInput.value = '';
+  cross.classList.remove('active')
+  addDisabledBtn();
+})
+
+function addDisabledBtn() {
+  btnAdd.setAttribute('disabled', true);
+
+  taskInput.oninput = function () {
+    if (!taskInput.value.trim()) {
+      cross.classList.remove('active')
+      btnAdd.setAttribute('disabled', true);
+    } else {
+      cross.classList.add('active')
+      btnAdd.removeAttribute('disabled');
+    }
+  };
 }
 
 function checkBox() {
-	box.oninput = function () {
-		if (box.checked) {
-			btnAdd.setAttribute('disabled', true);
-			taskInput.setAttribute('disabled', true);
-			addDisabledBtnAll();
-		} else {
-			btnAdd.removeAttribute('disabled');
-			taskInput.removeAttribute('disabled');
-			dellDisabledBtnAll();
-			addDisabledBtn();
-		}
-	};
+  box.oninput = function () {
+    if (box.checked) {
+      btnAdd.setAttribute('disabled', true);
+      taskInput.setAttribute('disabled', true);
+      addDisabledBtnAll();
+    } else {
+      btnAdd.removeAttribute('disabled');
+      taskInput.removeAttribute('disabled');
+      dellDisabledBtnAll();
+      addDisabledBtn();
+    }
+  };
 }
 
 function addDisabledBtnAll() {
-	const bShow = document.querySelectorAll('button');
+  const bShow = document.querySelectorAll('button');
 
-	for (let i = 0; i < bShow.length; i++) {
-		// bShow[i].setAttribute('disabled', true);
-		bShow[i].classList.add('disabled');
-	}
+  for (let i = 0; i < bShow.length; i++) {
+    // bShow[i].setAttribute('disabled', true);
+    bShow[i].classList.add('disabled');
+  }
 }
 
 function dellDisabledBtnAll() {
-	const bShow = document.querySelectorAll('button');
+  const bShow = document.querySelectorAll('button');
 
-	for (let i = 0; i < bShow.length; i++) {
-		// bShow[i].removeAttribute('disabled');
-		bShow[i].classList.remove('disabled');
-	}
+  for (let i = 0; i < bShow.length; i++) {
+    // bShow[i].removeAttribute('disabled');
+    bShow[i].classList.remove('disabled');
+  }
 }
