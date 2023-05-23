@@ -37,8 +37,11 @@
 				<div class="card-body">
 					<form id="form">
 						<div class="form-group">
-							<input type="text" class="form-control" id="taskInput" placeholder="Текст задачи" required />
-							<small id="emailHelp" class="form-text text-muted">Запишите сюда свою задачу</small>
+							<input type="text" class="form-control my-input" id="taskInput" placeholder="Текст задачи" required />
+							<div id="cross" class="cross"></div>
+							<label for="taskInput" class="label-my">
+								<small id="emailHelp" class="form-text text-muted">Запишите сюда свою задачу</small>
+							</label>
 						</div>
 						<button id="btnAdd" type="submit" class="btn btn-primary btn-lg active btn--add">Добавить</button>
 					</form>
