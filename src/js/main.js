@@ -4,6 +4,7 @@ const tasksList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
 const heart = document.querySelector('#heart');
 const btnAdd = document.querySelector('#btnAdd');
+const box = document.querySelector('#box');
 
 form.addEventListener('submit', addTask);
 
@@ -21,13 +22,15 @@ let tasks = [];
 if (localStorage.getItem('tasks')) {
 	tasks = JSON.parse(localStorage.getItem('tasks'));
 
-	// передаетм данные из localStorage в массив
+	// передаем данные из localStorage в массив
 	tasks.forEach((task) => renderTask(task));
 }
 
 checkEmptyList();
 
 addDisabledBtn();
+
+checkBox();
 
 // функции
 function addTask(event) {
@@ -55,6 +58,8 @@ function addTask(event) {
 	checkEmptyList();
 
 	saveToLocalStorage();
+
+	checkBox();
 
 	addDisabledBtn();
 }
@@ -131,7 +136,7 @@ function renderTask(task) {
 
 	// генерировать разметку для новой задачи
 	const taskHTML = `		
-  <li id="${task.id}" class="list-group-item d-flex justify-content-between task-item">
+  <li id="${task.id}"  class="list-group-item d-flex justify-content-between task-item">
   <span class="${cssClass}">${task.text}</span>
   <div class="task-item__buttons">
     <button type="button" data-action="done" class="btn-action">
@@ -164,6 +169,7 @@ function keyHandlerEsc(e) {
 
 function addDisabledBtn() {
 	btnAdd.setAttribute('disabled', true);
+
 	taskInput.oninput = function () {
 		if (taskInput.value.length == 0) {
 			btnAdd.setAttribute('disabled', true);
@@ -171,4 +177,37 @@ function addDisabledBtn() {
 			btnAdd.removeAttribute('disabled');
 		}
 	};
+}
+
+function checkBox() {
+	box.oninput = function () {
+		if (box.checked) {
+			btnAdd.setAttribute('disabled', true);
+			taskInput.setAttribute('disabled', true);
+			addDisabledBtnAll();
+		} else {
+			btnAdd.removeAttribute('disabled');
+			taskInput.removeAttribute('disabled');
+			dellDisabledBtnAll();
+			addDisabledBtn();
+		}
+	};
+}
+
+function addDisabledBtnAll() {
+	const bShow = document.querySelectorAll('button');
+
+	for (let i = 0; i < bShow.length; i++) {
+		// bShow[i].setAttribute('disabled', true);
+		bShow[i].classList.add('disabled');
+	}
+}
+
+function dellDisabledBtnAll() {
+	const bShow = document.querySelectorAll('button');
+
+	for (let i = 0; i < bShow.length; i++) {
+		// bShow[i].removeAttribute('disabled');
+		bShow[i].classList.remove('disabled');
+	}
 }

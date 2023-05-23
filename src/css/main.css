@@ -86,15 +86,15 @@ body {
 	float: right;
 }
 .copyright {
-	margin-top: 40px;
+	margin: 40px 0;
 	font-size: 14px;
 	color: gray;
 	text-align: center;
-	margin-bottom: 30px;
-	/* position: absolute; */
-	/* bottom: 30px; */
-	/* left: 0; */
-	/* right: 0; */
+
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
 
 .copyright__item {
@@ -143,4 +143,9 @@ body {
 
 .fa-heart--red {
 	color: red;
+}
+
+
+.disabled {
+  pointer-events: none;
 }
