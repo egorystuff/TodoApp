@@ -64,16 +64,16 @@ function addTask(event) {
 	addDisabledBtn();
 }
 
-function deleteTask(event) {
-	if (event.target.dataset.action !== 'delete') return;
+function deleteTask({ target }) {
+	if (target.dataset.action !== 'delete') return;
 
-	const parentNode = event.target.closest('li');
+	const parentNode = target.closest('li');
 
 	// определяем id задачи
 	const id = Number(parentNode.id);
 
 	// находим индекс задачи в массиве
-	const index = tasks.findIndex((task) => task.id == id);
+	const index = tasks.findIndex((task) => task.id === id);
 
 	// удаляем задачу из массива
 	tasks.splice(index, 1);
@@ -89,10 +89,10 @@ function deleteTask(event) {
 	saveToLocalStorage();
 }
 
-function doneTask(event) {
-	if (event.target.dataset.action !== 'done') return;
+function doneTask({ target }) {
+	if (target.dataset.action !== 'done') return;
 
-	const parentNode = event.target.closest('li');
+	const parentNode = target.closest('li');
 
 	// определяем id задачи
 	const id = Number(parentNode.id);
@@ -159,21 +159,59 @@ function addClassHeart() {
 
 function keyHandlerEsc(e) {
 	if (e.keyCode === 27 || e.key === 'Escape') {
-		console.log('esc');
 		e.target.value = '';
 		e.target.blur();
+		addDisabledBtn();
+		return;
 	}
 
-	addDisabledBtn();
+	if (e.key === 'Enter') {
+		const taskText = taskInput.value;
+
+		// создаем объект с задачами
+		const newTask = {
+			id: Date.now(),
+			text: taskText,
+			done: false,
+		};
+
+		tasks.push(newTask);
+
+		renderTask(newTask);
+
+		taskInput.value = '';
+		taskInput.blur();
+
+		addDisabledBtn();
+		taskInput.focus();
+
+		checkEmptyList();
+
+		saveToLocalStorage();
+
+		checkBox();
+
+		addDisabledBtn();
+	}
 }
+
+const cross = document.getElementById('cross');
+
+cross.addEventListener('click', () => {
+	taskInput.value = '';
+	cross.classList.remove('active');
+	addDisabledBtn();
+});
 
 function addDisabledBtn() {
 	btnAdd.setAttribute('disabled', true);
 
 	taskInput.oninput = function () {
-		if (taskInput.value.length == 0) {
+		if (!taskInput.value.trim()) {
+			cross.classList.remove('active');
 			btnAdd.setAttribute('disabled', true);
 		} else {
+			cross.classList.add('active');
 			btnAdd.removeAttribute('disabled');
 		}
 	};
@@ -184,30 +222,48 @@ function checkBox() {
 		if (box.checked) {
 			btnAdd.setAttribute('disabled', true);
 			taskInput.setAttribute('disabled', true);
-			addDisabledBtnAll();
+			addDisabled();
 		} else {
 			btnAdd.removeAttribute('disabled');
 			taskInput.removeAttribute('disabled');
-			dellDisabledBtnAll();
+			dellDisabled();
 			addDisabledBtn();
 		}
 	};
 }
 
-function addDisabledBtnAll() {
-	const bShow = document.querySelectorAll('button');
+function addDisabled() {
+	const btnAll = document.querySelectorAll('button');
+	const linksAll = document.querySelectorAll('a');
+	const I = document.querySelectorAll('i');
 
-	for (let i = 0; i < bShow.length; i++) {
-		// bShow[i].setAttribute('disabled', true);
-		bShow[i].classList.add('disabled');
+	for (let i = 0; i < btnAll.length; i++) {
+		btnAll[i].classList.add('disabled');
+	}
+
+	for (let i = 0; i < linksAll.length; i++) {
+		linksAll[i].classList.add('disabled');
+	}
+
+	for (let i = 0; i < I.length; i++) {
+		I[i].classList.add('disabled');
 	}
 }
 
-function dellDisabledBtnAll() {
-	const bShow = document.querySelectorAll('button');
+function dellDisabled() {
+	const btnAll = document.querySelectorAll('button');
+	const linksAll = document.querySelectorAll('a');
+	const I = document.querySelectorAll('i');
 
-	for (let i = 0; i < bShow.length; i++) {
-		// bShow[i].removeAttribute('disabled');
-		bShow[i].classList.remove('disabled');
+	for (let i = 0; i < btnAll.length; i++) {
+		btnAll[i].classList.remove('disabled');
+	}
+
+	for (let i = 0; i < linksAll.length; i++) {
+		linksAll[i].classList.remove('disabled');
+	}
+
+	for (let i = 0; i < I.length; i++) {
+		I[i].classList.remove('disabled');
 	}
 }
