@@ -236,19 +236,19 @@ function checkBox() {
 }
 
 function addDisabledBtnAll() {
-  const bShow = document.querySelectorAll('button');
+  const btnAll = document.querySelectorAll('button');
 
-  for (let i = 0; i < bShow.length; i++) {
+  for (let i = 0; i < btnAll.length; i++) {
     // bShow[i].setAttribute('disabled', true);
-    bShow[i].classList.add('disabled');
+    btnAll[i].classList.add('disabled');
   }
 }
 
 function dellDisabledBtnAll() {
-  const bShow = document.querySelectorAll('button');
+  const btnAll = document.querySelectorAll('button');
 
-  for (let i = 0; i < bShow.length; i++) {
+  for (let i = 0; i < btnAll.length; i++) {
     // bShow[i].removeAttribute('disabled');
-    bShow[i].classList.remove('disabled');
+    btnAll[i].classList.remove('disabled');
   }
 }
